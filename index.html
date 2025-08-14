@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TOSERBA DIGITAL</title>
+  <meta name="description" content="TOSERBA DIGITAL — Jual akun Netflix, Canva, Spotify, YouTube Premium, Disney+, dan lainnya. Order cepat via WhatsApp." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0a2540',
+            navy2: '#0f2f54',
+            accent: '#00d4ff',
+            border: '#111827',
+            card: '#ffffff',
+            shadow: '#111827',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .nb {
+      border: 3px solid #111827;
+      box-shadow: 8px 8px 0 0 #111827;
+      border-radius: 0.75rem;
+      background: white;
+    }
+    .btn-nb {
+      border: 3px solid #111827;
+      box-shadow: 4px 4px 0 0 #111827;
+      border-radius: 0.5rem;
+      transition: transform 0.05s ease-in-out;
+    }
+    .btn-nb:hover {
+      transform: translate(-2px, -2px);
+    }
+    .btn-nb:active {
+      transform: translate(0, 0);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <!-- Header -->
+  <header class="bg-gradient-to-br from-navy to-navy2 text-white">
+    <div class="max-w-6xl mx-auto px-4 py-12">
+      <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">TOSERBA DIGITAL</h1>
+      <p class="text-lg sm:text-xl max-w-2xl">Netflix, Canva, Spotify, YouTube Premium, Disney+, dan lainnya. Klik beli, langsung chat WhatsApp otomatis.</p>
+    </div>
+  </header>
+
+  <!-- Produk -->
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <div id="product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-300">
+    <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="font-semibold">© 2025 TOSERBA DIGITAL</p>
+      <a href="https://wa.me/6287775787888" target="_blank" class="btn-nb bg-navy text-white px-4 py-2 font-bold">Chat WhatsApp</a>
+    </div>
+  </footer>
+
+  <script>
+    const PRODUCTS = [
+      {
+        name: "Netflix",
+        color: "#e50914",
+        plans: [
+          { label: "1 Bulan - Slot Share", price: 20000 },
+          { label: "1 Bulan - Private", price: 65000 }
+        ],
+        desc: "Streaming film & series tanpa batas."
+      },
+      {
+        name: "Canva Pro",
+        color: "#00c4cc",
+        plans: [
+          { label: "1 Bulan - Team Slot", price: 15000 },
+          { label: "1 Tahun - Team Slot", price: 150000 }
+        ],
+        desc: "Desain sosial media & kerja jadi mudah."
+      },
+      {
+        name: "Spotify Premium",
+        color: "#1db954",
+        plans: [
+          { label: "1 Bulan - Individual", price: 15000 },
+          { label: "1 Bulan - Family Slot", price: 12000 }
+        ],
+        desc: "Musik tanpa iklan, download offline."
+      }
+    ];
+
+    const WHATSAPP_NUMBER = "6287775787888";
+
+    function priceIDR(n) {
+      return new Intl.NumberFormat("id-ID", { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById("product-grid");
+      grid.innerHTML = PRODUCTS.map((p, idx) => `
+        <div class="nb p-4 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-lg border-2 border-black flex items-center justify-center font-bold text-white" style="background:${p.color}">
+                ${p.name.split(' ').map(w => w[0]).join('').slice(0,3)}
+              </div>
+              <div>
+                <h3 class="text-lg font-bold">${p.name}</h3>
+                <p class="text-sm text-gray-700">${p.desc}</p>
+              </div>
+            </div>
+            <label class="block mt-4">
+              <span class="font-semibold">Paket</span>
+              <select id="plan-${idx}" class="w-full mt-1 p-2 border-2 border-black rounded-lg">
+                ${p.plans.map((pl, i) => `<option value="${i}">${pl.label} — ${priceIDR(pl.price)}</option>`).join("")}
+              </select>
+            </label>
+            <label class="block mt-2">
+              <span class="font-semibold">Qty</span>
+              <input id="qty-${idx}" type="number" min="1" value="1" class="w-full mt-1 p-2 border-2 border-black rounded-lg" />
+            </label>
+          </div>
+          <button onclick="buy(${idx})" class="btn-nb bg-navy text-white mt-4 px-4 py-2 font-bold">🛒 Beli via WhatsApp</button>
+        </div>
+      `).join("");
+    }
+
+    function buy(idx) {
+      const p = PRODUCTS[idx];
+      const planIdx = +document.getElementById(`plan-${idx}`).value;
+      const qty = Math.max(1, parseInt(document.getElementById(`qty-${idx}`).value || "1"));
+      const plan = p.plans[planIdx].label;
+      const msg = `Halo kak, aku mau order ${p.name} — Paket: ${plan} — Qty: ${qty}.`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
